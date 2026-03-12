@@ -64,7 +64,7 @@ By this point you should have already heard a short lecture on the
 fundamentals of phylogenetics, particularly about the concepts of
 homology, building a matrix of homologous characters, and using the
 matrix to find the “best” tree using the parsimony optimality criterion.
-The following exercise is a bit silly, but it is meant t o reinforce
+The following exercise is a bit silly, but it is meant to reinforce
 these concepts.
 
 ## The Character Matrix and Parsimony
