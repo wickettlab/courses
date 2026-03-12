@@ -508,7 +508,7 @@ email address at the bottom to be notified when the analysis is done and
 get a link to the results. ***You must use your UniVie email address or
 it will not work!***
 
-You could run many different analyses with all of these data. **There is no need to do every possible analysis!** Try a few and see how the results differ. In particular, check out how the phylogeny of one particular gene differs from the analysis of the concatenated alignments. **You could also used the Primulaceae data that is available on Moodle. Analysis of these data will be included in the protocls and presentations (see below), but I thought it might be fun to have some data focused on a "classic" question in plant phylogenetics to play around with here.**
+You could run many different analyses with all of these data. **There is no need to do every possible analysis!** Try a few and see how the results differ. In particular, check out how the phylogeny of one particular gene differs from the analysis of the concatenated alignments.
 
 1.  rbcL with Auto model detection
 2.  rbcL with JC
@@ -527,6 +527,8 @@ You could run many different analyses with all of these data. **There is no need
 15. concatenated with GTR
 
 For all analyses, be sure to include a bootstrap analysis.
+
+**You could also use the Primulaceae data that is available on Moodle. Analysis of these data will be included in the protocls and presentations (see below), but I thought it might be fun to have some data focused on a "classic" question in plant phylogenetics to play around with here.**
 
 When an analysis is finished, click the link in the email and you’ll see
 a representation of the tree. But we can’t do much with this tree, so we
