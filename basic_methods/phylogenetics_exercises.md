@@ -587,22 +587,31 @@ comfortable using R yet).
 
 ## Installing and Running Mesquite
 
-You can download Mesquite by going to mesquiteproject.org and following
-the instructions for your operating system. You will likely be prompted
+You can download Mesquite by going to <a href="https://github.com/MesquiteProject/MesquiteCore/releases" target="_blank">Mesquite's GitHub page</a> and downloading the installer for your operating system (Linux, macOS, or Windows). You will likely be prompted
 to install Java if it is not already installed. It appears that there
 may be some difficulties installing Mesquite on Windows 11. If you are
 running windows, makes sure Java is running and then try all of the
 Mesquite\_Starter.exe files (e.g., Mesquite\_Starter\_E1.exe). **If you
 aren’t able to get Mesquite running, please partner up with someone and
-work on this exercise together!**
+work on this exercise together! And please conatct me if you would like some help getting this setup - we can schedule a time to meet in my office!**
 
 Click on one of the Mesquite\_Starter.exe files
-(Mesquite\_Starter\_E1.exe worked for me) and Mesquite will open.
+(Mesquite\_Starter\_E1.exe worked for me on Windows, though updated versions may be different; doubling clicking the Mesquite_Starter file on macOS also worke for me) and Mesquite will open.
 
 Download the ACSR\_2025.nex file from Moodle. For the protocol, this
 file will be updated as ACSR\_2026.nex once your work from the first
-half of the course has been completed. In Mesquite, click File -&gt;
-Open File… and choose ACSR\_2025.nex (from wherever you saved the file).
+half of the course has been completed and re-coded. In Mesquite, click File -&gt;
+Open File… and choose ACSR\_2025.nex (from wherever you saved the file). This should open a Mesquite project window with four tabs: Trees, Flower characters, StateNames, and Characters. By default it should disply the Flower characters tab, which shows a matrix of all the species and character states for each character. It should look something like this:
+
+<br/>
+
+![](./mesquite_matrix.jpg)
+
+<br/>
+
+<center><strong>Figure 2: Mesquite view after opening nexus file</strong></center>
+
+<br/>
 
 ## Reconstructing Ancestral Character States
 
