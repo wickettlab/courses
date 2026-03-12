@@ -633,9 +633,11 @@ Ancestral States highlighted; click OK. You should now see that the nodes and ti
 
 <br/>
 
-<center><strong>Figure 2: Mesquite view after opening nexus file</strong></center>
+<center><strong>Figure 2: Mesquite view with reconstructed character states</strong></center>
 
 <br/>
+
+Scroll through the characters and think about them relative to the observations you made during the first four days of this class. Do changes from one character to another happen only once? Do some characters states evolve convergently (remember homoplasy!)? Are some of these character states synapomorphies for a clade?
 
 # Protocol and Presentation Tasks
 
@@ -645,7 +647,7 @@ and what to include. All of these analyses will be on data related to
 Primulaceae so that it follows the work you did in the Structural Botany
 section of this course. Detailed instructions aren’t provided here
 because you should simply follow the steps from the examples above - so
-just scroll up for details about running andy of the analyses below!
+just scroll up for details about running any of the analyses below!
 Don’t forget that you can contact me any time at
 (<a href="mailto:norman.wickett@univie.ac.at">norman.wickett@univie.ac.at</a>).
 I am happy to set up a time to meet in my office to help you if you are
@@ -695,9 +697,9 @@ After running the analyses, discuss the following:
 -   Why would branch lengths be important for understanding the
     evolutionary history of this group?
 
-In the protocol, be sure to report all settings and programs used to
+<strong>In the protocol</strong>, be sure to report all settings and programs used to
 reconstruct these phylogenies, including the method of alignment.
-Include all trees as figures within the text. For presentations, you can
+Include all trees as figures within the text. <strong>For presentations</strong>, you can
 provide a bit of an overview about phylogenetics and then describe your
 results, but you don’t need to include details about parameters (but you
 should discuss the questions above).
@@ -714,14 +716,14 @@ Follow the steps above to reconstruct the ancestral states of the
 characters you coded. Scroll through each character and observe
 interesting evolutionary patterns.
 
--   Have some traits evolved conversantly (independently in two clades)?
+-   Have some traits evolved convergently (independently in two clades)?
 
 -   Have some clades retained the ancestral state (plesiomorphy)?
 
 -   What are some synapomorphies that define specific clades, for
     example Primulaceae, Ebenaceae, or other sub-clades of Primulaceae?
 
-Choose 5-10 interesting characters and describe their evolutionary
+<strong>Choose 5-10 interesting characters</strong> and describe their evolutionary
 patterns relative to the phylogeny, particularly ones that might reflect
 the three questions above. Export the tree as a pdf with the
 reconstructed character states and include them in the protocol. You
