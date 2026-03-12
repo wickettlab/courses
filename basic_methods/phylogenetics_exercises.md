@@ -360,8 +360,7 @@ using to reconstruct the relationships of these groups are:
 -   *Salvia rosmarinus* (Dicot; Lamiales)
 -   *Cucumis sativus* (Dicot; Cucurbitales)
 
-You will be using four separate genes reconstruct at least four
-phylogenies. The gene files are available on Moodle and are:
+There are five files on Moodle that can be used to reconstruct the phylogeny of these species. Four of the files are the *unaligned* DNA sequences of individual genes:
 
 1.  rbcL – A chloroplast-encoded gene that encodes the large subunit of
     Rubisco.
@@ -381,6 +380,10 @@ out the paper that describes them:
 These are the same genes that were used in the recent, large-scale
 phylogeny of angiosperms by Zuntini et al. in Nature:
 <https://doi.org/10.1038/s41586-024-07324-0>
+
+The fifth file is a matrix that concatenates all four genes together. The concatenation happened *after* each gene was aligned, so there is no need to align this file first - you can just use it as the input for IQ-TREE (see below). The pre-aligned, concatenate file is:
+
+```concatenated_angiosperm_data.fa
 
 **Go ahead and download the files now.**
 
@@ -505,7 +508,7 @@ email address at the bottom to be notified when the analysis is done and
 get a link to the results. ***You must use your UniVie email address or
 it will not work!***
 
-**Run a total of 12 analyses:**
+You could run many different analyses with all of these data. **There is no need to do every possible analysis!* Try a few and see how the results differ. In particular, check out how the phylogeny of one particular gene differs from the analysis of the concatenated alignments.
 
 1.  rbcL with Auto model detection
 2.  rbcL with JC
@@ -519,6 +522,9 @@ it will not work!***
 10. 5921 with Auto model detection
 11. 5921 with JC
 12. 5921 with GTR
+13. concatenated with Auto model detection
+14. concatenated with JC
+15. concatenated with GTR
 
 For all analyses, be sure to include a bootstrap analysis.
 
