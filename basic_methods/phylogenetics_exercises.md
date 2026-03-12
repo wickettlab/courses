@@ -591,7 +591,7 @@ You can download Mesquite by going to <a href="https://github.com/MesquiteProjec
 to install Java if it is not already installed. It appears that there
 may be some difficulties installing Mesquite on Windows 11. If you are
 running windows, makes sure Java is running and then try all of the
-```text Mesquite\_Starter.exe files``` (e.g., Mesquite\_Starter\_E1.exe). **If you
+```Mesquite\_Starter.exe files``` (e.g., Mesquite\_Starter\_E1.exe). **If you
 aren’t able to get Mesquite running, please partner up with someone and
 work on this exercise together! And please conatct me if you would like some help getting this setup - we can schedule a time to meet in my office!**
 
