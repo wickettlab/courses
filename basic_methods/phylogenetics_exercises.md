@@ -383,7 +383,7 @@ phylogeny of angiosperms by Zuntini et al. in Nature:
 
 The fifth file is a matrix that concatenates all four genes together. The concatenation happened *after* each gene was aligned, so there is no need to align this file first - you can just use it as the input for IQ-TREE (see below). The pre-aligned, concatenate file is:
 
-```concatenated_angiosperm_data.fa
+```concatenated_angiosperm_data.fa```
 
 **Go ahead and download the files now.**
 
