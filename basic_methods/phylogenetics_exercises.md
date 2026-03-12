@@ -591,17 +591,20 @@ You can download Mesquite by going to <a href="https://github.com/MesquiteProjec
 to install Java if it is not already installed. It appears that there
 may be some difficulties installing Mesquite on Windows 11. If you are
 running windows, makes sure Java is running and then try all of the
-```Mesquite\_Starter.exe files``` (e.g., Mesquite\_Starter\_E1.exe). **If you
+```Mesquite\_Starter.exe files``` (e.g., ```Mesquite\_Starter\_E1.exe```). **If you
 aren’t able to get Mesquite running, please partner up with someone and
 work on this exercise together! And please conatct me if you would like some help getting this setup - we can schedule a time to meet in my office!**
 
-Click on one of the Mesquite\_Starter.exe files
-(Mesquite\_Starter\_E1.exe worked for me on Windows, though updated versions may be different; doubling clicking the Mesquite_Starter file on macOS also worke for me) and Mesquite will open.
+Click on one of the ```Mesquite\_Starter.exe``` files
+(```Mesquite\_Starter\_E1.exe``` worked for me on Windows, though updated versions may be different; doubling clicking the ```Mesquite_Starter``` file on macOS also worked for me) and Mesquite will open.
 
-Download the ACSR\_2025.nex file from Moodle. For the protocol, this
-file will be updated as ACSR\_2026.nex once your work from the first
-half of the course has been completed and re-coded. In Mesquite, click File -&gt;
-Open File… and choose ACSR\_2025.nex (from wherever you saved the file). This should open a Mesquite project window with four tabs: Trees, Flower characters, StateNames, and Characters. By default it should disply the Flower characters tab, which shows a matrix of all the species and character states for each character. It should look something like this:
+Download the ```ACSR\_2025.nex``` file from Moodle. For the protocol, this
+file will be updated as ```ACSR\_2026.nex``` once your work from the first
+half of the course has been completed and re-coded. In Mesquite, click
+
+```File -&gt; Open File…``` and choose ```ACSR\_2025.nex``` (from wherever you saved the file). 
+
+This should open a Mesquite project window with four tabs: ```Trees```, ```Flower characters```, ```StateNames```, and ```Characters```. By default it should disply the Flower characters tab, which shows a matrix of all the species and character states for each character. It should look something like this:
 
 <br/>
 
@@ -615,17 +618,28 @@ Open File… and choose ACSR\_2025.nex (from wherever you saved the file). This 
 
 ## Reconstructing Ancestral Character States
 
-Once you have opend the ACSR\_2025.nex file, you will want to see how the characters map to the extant species and ancestral nodes. To open the stored tree, you can either just click on the Trees tab (Trees from "Primulaceae_total_evidence.tre) orgo to the Taxa&Trees menu
-and choose New Tree Window -&gt; With Trees from Source. By default,
-Stored Trees will be highlighted and simply click OK.
+Once you have opend the ```ACSR\_2025.nex file```, you will want to see how the characters map to the extant species and ancestral nodes. To open the stored tree, you can either just click on the Trees tab (Trees from "Primulaceae_total_evidence.tre) or go to the 
+
+```Taxa&Trees``` menu and choose ```New Tree Window -&gt; With Trees from Source```. 
+
+By default, Stored Trees will be highlighted and simply click OK.
 
 Once the tree is open, check to make sure it is rooted with Pentaphylax (this should be the default and you shouldn't have to change anything).
-Then, change the appearance of the tree by choosing Form -&gt; Tree
-Form -&gt; Balls & Sticks. By default, the tree will be drawn with branch lengths inferred from a Maximum Likelihood analysis. If you want, you can change the view by going to Form -&gt; Branch Length Display -&gt; Draw as Ultrametric. How you display the tree is totally up to you.
+Then, change the appearance of the tree by choosing 
 
-To reconstruct the ancestral character states, choose Analysis:Tree
--&gt; Reconstruct Ancestral States ("Trace Character"). A window will pop up with Parsimony
-Ancestral States highlighted; click OK. You should now see that the nodes and tips (circles) are shaded by their character state. The legend corresponding to each state will be in a box in the upper left corner with the title "Trace Character." You can use the forward and reverse arrows to scan through the reconstruction of each character. It should look something like this:
+```Form -&gt; Tree Form -&gt; Balls & Sticks``` 
+
+By default, the tree will be drawn with branch lengths inferred from a Maximum Likelihood analysis. If you want, you can change the view by going to 
+
+```Form -&gt; Branch Length Display -&gt; Draw as Ultrametric``` 
+
+How you display the tree is totally up to you.
+
+To reconstruct the ancestral character states, choose 
+
+```Analysis:Tree -&gt; Reconstruct Ancestral States ("Trace Character")```
+
+A window will pop up with Parsimony Ancestral States highlighted; click ```OK```. You should now see that the nodes and tips (circles) are shaded by their character state. The legend corresponding to each state will be in a box in the upper left corner with the title ```Trace Character```. You can use the forward and reverse arrows to scan through the reconstruction of each character. It should look something like this:
 
 <br/>
 
