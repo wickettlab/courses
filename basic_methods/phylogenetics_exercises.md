@@ -624,7 +624,7 @@ Once you have opend the ```ACSR\_2025.nex file```, you will want to see how the 
 
 By default, Stored Trees will be highlighted and simply click OK.
 
-Once the tree is open, check to make sure it is rooted with Pentaphylax (this should be the default and you shouldn't have to change anything).
+Once the tree is open, check to make sure it is rooted with *Pentaphylax* (this should be the default and you shouldn't have to change anything).
 Then, change the appearance of the tree by choosing 
 
 ```Form > Tree Form > Balls & Sticks``` 
