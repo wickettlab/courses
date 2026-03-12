@@ -62,7 +62,7 @@ that course will go into much more detail.
 
 By this point you should have already heard a short lecture on the
 fundamentals of phylogenetics, particularly about the concepts of
-homology, building a matrix of h omologous characters, and using the
+homology, building a matrix of homologous characters, and using the
 matrix to find the “best” tree using the parsimony optimality criterion.
 The following exercise is a bit silly, but it is meant t o reinforce
 these concepts.
@@ -71,7 +71,7 @@ these concepts.
 
 We are going to start learning how to reconstruct species relationships
 using a relatively simple example that involves a set of fake plant
-species in the fake plant family Dendrogrammaceae.
+species in the fake plant family Dendrogrammaceae. The objective of this exercise is to reinforce the concept of homology and it's importance in phylogenetics, and to get a first view into how a character matrix is "translated" into a phylogenetic hypothesis.
 
 Developed by Duncan et al. in 1980, the Dendrogrammaceae is a family of
 hypothetical plant species. They were designed as a test case to compare
