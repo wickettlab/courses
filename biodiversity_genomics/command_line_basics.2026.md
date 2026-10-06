@@ -1,3 +1,10 @@
+# Biodiversity Genomics
+
+## Day 1: Introduction to the Computing from the Command Line
+
+### Norman Wickett and Daria Shipilina
+### 6 October, 2026
+
 As you learn more about genome analysis in the course, you will
 understand that processing and analysing enormous amounts of DNA
 sequence data requires enormous amounts of computer power. To access
