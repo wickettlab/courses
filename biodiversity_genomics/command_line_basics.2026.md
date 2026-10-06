@@ -278,7 +278,7 @@ see:
 To make your own directory, type:
 
 ``` text
-mkidr <your_last_name>
+mkdir <your_last_name>
 ```
 
 Don’t forget that you need to actually type your last name instead of
