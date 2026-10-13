@@ -244,7 +244,8 @@ module load FastQC
 
 fastqc --outdir /lisc/data/scratch/course/2026w300485/<your_directory>/fastqc_output \
 --dir /lisc/data/scratch/course/2026w300485/<your_directory>/fastqc_temp -t 16 \
-/lisc/data/scratch/course/2026w300485/course_data/RNA_Seq/Dsuper_6B_MKRN260064942-1A_23M3G5LT4_L1_1.fq.gz \ /lisc/data/scratch/course/2026w300485/course_data/RNA_Seq/Dsuper_6B_MKRN260064942-1A_23M3G5LT4_L1_2.fq.gz
+/lisc/data/scratch/course/2026w300485/course_data/RNA_Seq/Dsuper_6B_MKRN260064942-1A_23M3G5LT4_L1_1.fq.gz \
+/lisc/data/scratch/course/2026w300485/course_data/RNA_Seq/Dsuper_6B_MKRN260064942-1A_23M3G5LT4_L1_2.fq.gz
 ```
 
 Before we submit this file, **don’t forget to save it!** Now, to submit
