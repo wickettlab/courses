@@ -18,16 +18,6 @@ assembler depends on what we learned about the genome last week.
 **Keep your SeqKit, GenomeScope, and Smudgeplot results open.** You will
 need them in Section 5.
 
-As always, commands that you type in the VS Code terminal look like
-this:
-
-``` text
-specific commands will be written in text like this.
-```
-
-and anything inside angle brackets, like `<your_species>`, is
-information that you need to fill in yourself.
-
 ## 1. How hifiasm works (the short version)
 
 hifiasm (<https://github.com/chhylp123/hifiasm>) is currently the most
@@ -66,15 +56,6 @@ lecture. Where the two copies of a chromosome are identical, the graph
 is a single path. Where the two copies differ, the path splits into two
 and joins again, forming a **bubble**:
 
-``` text
-                  ___ haplotype 1 ___
-                 /                   \
-  ==============<                     >==============
-                 \___ haplotype 2 ___/
-
-    homozygous      heterozygous region      homozygous
-```
-
 Stretches of the graph without any branches are called **unitigs**.
 hifiasm writes out two versions of this graph: the raw unitig graph
 (`r_utg`), which keeps everything, and the processed unitig graph
@@ -96,7 +77,7 @@ hifiasm can use them.
 of a chromosome are very different, they don't form a bubble at all.
 Instead they are assembled as two separate contigs, so the same region
 ends up in the assembly twice. These extra copies are called
-**haplotigs**, and they make the assembly too big. hifiasm looks for
+**haplotigs**. hifiasm looks for
 contigs that are very similar to another contig *and* have about half of
 the homozygous coverage, and removes them from the primary assembly.
 This is called **purging**, and it is one of the steps you will be
@@ -112,7 +93,7 @@ sets in one day.
 
 ## 2. Finding hifiasm on LiSC
 
-You know the drill by now. Find the hifiasm module, load it, and open
+Find the hifiasm module, load it, and open
 the help menu. Remember that LiSC is case-sensitive, so check how the
 module name is written first:
 
@@ -141,16 +122,6 @@ reading the full documentation at
 <https://hifiasm.readthedocs.io/en/latest/>. Keep that page open in your
 browser for the rest of the day.
 
-Finally, check which version you are using:
-
-``` text
-hifiasm --version
-```
-
-**Write the version number down.** You will need it for the methods
-section of your report, because defaults can change between versions.
-The defaults given in this document are from hifiasm 0.25.
-
 ## 3. What hifiasm needs as input
 
 hifiasm needs very little to get started:
@@ -159,8 +130,6 @@ hifiasm needs very little to get started:
   (`.gz`), and you can list several files one after the other. hifiasm
   ignores the quality scores in FASTQ files, so FASTA works just as
   well.
-- **Optionally, Hi-C reads**, given as two files: read 1 and read 2 of
-  each pair.
 
 Our HiFi data are in the same place as last week:
 
@@ -168,10 +137,6 @@ Our HiFi data are in the same place as last week:
 ls -lh /lisc/data/scratch/course/2026w300485/course_data/HiFi_data
 ```
 
-Which file belongs to your species? Now look around in `course_data`.
-**Do any of our three species also have Hi-C data?** Write down the full
-paths of any Hi-C files you find for your species; you'll need them
-later.
 
 The simplest possible hifiasm command looks like this:
 
@@ -193,7 +158,7 @@ histogram (think of a human). The further your genome is from that, the
 more likely it is that some defaults need changing. Here are the
 parameters that matter most, grouped by the question they answer.
 
-### 4.1 Where is the homozygous peak? (`--hom-cov` and `--hg-size`)
+### 4.1 Where is the homozygous peak? (`--hom-cov`)
 
 In Step 1, hifiasm has to decide which peak in its k-mer histogram is
 the homozygous peak. Its strategy is simple: it finds the tallest peak,
@@ -210,9 +175,6 @@ contains lines like these:
 [M::ha_analyze_count] right: none
 [M::ha_ft_gen] peak_hom: 30; peak_het: 15
 ```
-
-*Question: Think back to the GenomeScope plots from last week. In what
-kinds of genomes could this simple strategy pick the wrong peak?*
 
 You can predict where the peaks *should* be before you even run hifiasm.
 GenomeScope reports `kcov`, the k-mer coverage of a single copy of the
@@ -282,10 +244,7 @@ phased and fully phased (Hi-C) outputs only make sense for diploid
 genomes. For polyploids, the hifiasm documentation recommends setting
 `--n-hap` to the number of haplotypes, using only the **primary
 assembly**, and then running extra rounds of purging with a separate
-tool such as **purge_dups**. A user with a triploid genome found exactly
-this: even with `--n-hap 3`, their primary assembly was much larger than
-the GenomeScope estimate, and the developer recommended several rounds
-of purge_dups (<https://github.com/chhylp123/hifiasm/issues/179>).
+tool such as **purge_dups**. 
 
 Polyploidy also raises a coverage question. hifiasm usually needs **at
 least 13x coverage per haplotype**. For a diploid, coverage per
@@ -319,23 +278,7 @@ assemblies:
 look at the figure and decide which panel matches each of the outputs
 above.
 
-### 4.5 Memory, repeats, and starting over (`-f`, `-D`, `-N`, `-i`)
-
-`-f` controls a memory-saving filter used when counting k-mers. With the
-default (`-f37`), this filter takes about 16 GB of memory right at the
-start. The documentation recommends `-f0` (no filter) for small genomes,
-and `-f38` or `-f39` for genomes much larger than the human genome. How
-do our genomes compare to the human genome (about 3.1 Gb)?
-
-`-D` and `-N` control how many high-frequency k-mers and overlaps are
-used during error correction. Raising them can help hifiasm resolve
-repeats, but makes it slower. Because they change the error correction
-itself, they only take effect in a completely fresh run.
-
-`-i` tells hifiasm to ignore any saved `.bin` files and start again from
-scratch.
-
-### 4.6 Cheat sheet
+### 4.5 Cheat sheet
 
 | Option         | Default           | What it controls                              | Works with saved `.bin` files?  |
 |----------------|-------------------|-----------------------------------------------|---------------------------------|
@@ -355,39 +298,7 @@ scratch.
 
 You will work in the same species groups as last week. Your job is to
 decide how *you* would run hifiasm on your species, and to justify every
-choice. There is no single correct answer, but there are definitely
-wrong ones, and every choice must be backed by a number or a biological
-fact.
-
-### Part A: Collect what you know
-
-Copy this table into your notes and fill in the empty cells for your
-species. Some information from the literature has already been added;
-your numbers come from last week's SeqKit, GenomeScope, and Smudgeplot
-results.
-
-|                                       | *Piper nigrum*             | *Dianthus superbus*             | *Dianthus serotinus*              |
-|---------------------------------------|----------------------------|---------------------------------|-----------------------------------|
-| Chromosome number (literature)        | 2n = 52                    | 2n = 30 (2n = 60 also reported) | 2n = 60 and 2n = 90 both reported |
-| Ploidy from your Smudgeplot           |                            |                                 |                                   |
-| Genome size, literature               | 761.74 Mb (k-mer estimate) | not published                   | not published                     |
-| Genome size, your GenomeScope (`len`) |                            |                                 |                                   |
-| Heterozygosity, literature            | 1.33%                      | not published                   | not published                     |
-| Heterozygosity, your GenomeScope      |                            |                                 |                                   |
-| `kcov` from GenomeScope               |                            |                                 |                                   |
-| Total HiFi bases (SeqKit `sum_len`)   |                            |                                 |                                   |
-| Total coverage (bases ÷ genome size)  |                            |                                 |                                   |
-| Coverage per haplotype                |                            |                                 |                                   |
-| Expected `peak_het` and `peak_hom`    |                            |                                 |                                   |
-| Hi-C data available?                  |                            |                                 |                                   |
-
-The *Piper nigrum* values are from Hu et al. (2019), *Nature
-Communications* 10: 4702. For comparison, a typical human genome has a
-heterozygosity of about 0.1%.
-
-### Part B: Answer these questions for your species
-
-Write your answers down; you will need them for Part C.
+choice. There is no single correct answer, but every choice must be backed by a number or a biological fact. Please consider:
 
 1.  **Ploidy.** Does your Smudgeplot agree with the chromosome counts?
     If two ploidy levels have been reported for your species, which one
@@ -405,23 +316,14 @@ Write your answers down; you will need them for Part C.
     hermaphrodite plants). What does that suggest about how much it
     outcrosses, and about its heterozygosity?
 5.  **Outputs.** Which assemblies do you want: partially phased
-    hap1/hap2, primary/alternate, or Hi-C phased? Why? Which ones would
+    hap1/hap2, primary/alternate? Why? Which ones would
     actually make sense for a polyploid?
 6.  **Expected size.** How large should your primary assembly be? How
-    large should each haplotype be? For *D. serotinus*: would you expect
-    a different assembly size if it is an **autopolyploid** (all
-    chromosome sets from one species) or an **allopolyploid**
-    (chromosome sets from two different species)?
-7.  **Resources.** Using the numbers in Section 6, how many CPUs, how
-    much memory, and how much time will you ask for?
+    large should each haplotype be? 
 
-### Part C: Write your plan
+Present your plan to the class
 
-Write your hifiasm command and a short table that explains every option
-you set, *and* every important default you decided to keep. Here is an
-example for a genome that is not in our course: the maize inbred line
-B73, which was assembled in the RCAC hifiasm tutorial
-(<https://docs.rcac.purdue.edu/lifesciences/tutorials/hifi-assembly/>).
+See example below:
 
 ``` text
 hifiasm -o maize_B73 -t 32 -l0 maize-hifi.fasta
@@ -432,15 +334,10 @@ hifiasm -o maize_B73 -t 32 -l0 maize-hifi.fasta
 | `-l`        | 0            | B73 is an inbred line, so the two copies of each chromosome are almost identical. Purging would only remove real sequence.                                  |
 | `--hom-cov` | not set      | 70 Gb of reads ÷ 2.4 Gb genome ≈ 29x, so `peak_hom` should be about 29. Check the log, and only set `--hom-cov` if hifiasm picked something very different. |
 | `--n-hap`   | 2 (default)  | Maize is diploid.                                                                                                                                           |
-| `-f`        | 37 (default) | 2.4 Gb is a large genome, but still smaller than the human genome.                                                                                          |
 
-### Part D: Compare, predict, and run
 
-Swap plans with another group working on a different species. How are
-your plans different, and why? Then check your plan with one of the
-instructors.
 
-Each group will run three assemblies:
+Each group can run up to three assemblies:
 
 1.  **Default:** only `-o` and `-t`.
 2.  **Your plan** from Part C.
@@ -449,83 +346,38 @@ Each group will run three assemblies:
     compare `-l0` with `-l3`, or set `--hom-cov` to half of your
     expected `peak_hom`.
 
-**Before you submit anything, write down a prediction for each run:**
-will the assembly be larger or smaller than the default, and roughly by
-how much?
 
 ## 6. Running hifiasm on LiSC
 
-### 6.1 Using the saved error correction
-
-A complete hifiasm run on one of our genomes takes many hours. To save
-time, your instructors have already run Steps 1 to 3 for each species,
-and saved the `.bin` files here:
+hifiasm writes a lot of files into the directory it is run from, so
+first make a directory for your assembly in your personal folder and move into it:
 
 ``` text
-/lisc/data/scratch/course/2026w300485/course_data/hifiasm_bins/
+mkdir hifiasm_<species>
+cd hifiasm_<species>
 ```
 
-Have a look inside the folder for your species. You should see three
-files that all start with the same prefix: `Pnig` for *Piper nigrum*,
-`Dsup` for *Dianthus superbus*, and `Dser` for *Dianthus serotinus*. To
-reuse them, two things must be true: the `.bin` files must be in the
-directory you run hifiasm from, and you must use **exactly the same
-prefix** with `-o`.
-
-Because all three of your runs will use the same prefix, each run needs
-its own directory, otherwise each run will overwrite the output of the
-one before it. Rather than copying the large `.bin` files (please
-don't!), we will create **symbolic links** to them with `ln -s`. A
-symbolic link is like a shortcut: it looks like a file in your
-directory, but it points to the original file. In your personal course
-directory, try:
-
-``` text
-mkdir -p hifiasm/run_default
-cd hifiasm/run_default
-ln -s /lisc/data/scratch/course/2026w300485/course_data/hifiasm_bins/<species>/*.bin .
-ls -l
-```
-
-What does `ls -l` show for the linked files? Repeat this for `run_plan`
-and `run_test`.
-
-### 6.2 The submission script
-
-In each run directory, create a submission script. For runs that reuse
-the `.bin` files, use 16 CPUs, 128G of memory, and an estimated run time
-of twelve hours. (For comparison, a complete run from scratch on one of
-our genomes needs about 32 CPUs, 128G of memory, and up to a day.) Your
-submission script should look something like this:
+Now create your submission script there. Piper nigrum full assembly needs a lot of
+resources, so use 32 CPUs, 128G of memory, and an estimated run time of
+one day. For both Dianthus species drop number of cpus to 16 and use 16 hours.
+Your submission script should look something like this:
 
 ``` text
 #!/bin/bash
 #
-#SBATCH --job-name=hifiasm_default
-#SBATCH --cpus-per-task=16
+#SBATCH --job-name=hifiasm_<species>
+#SBATCH --cpus-per-task=32
 #SBATCH --mem=128G
 #SBATCH --partition=basic
 #SBATCH --mail-type=ALL
-#SBATCH --time=0-12:00:00
+#SBATCH --time=1-00:00:00
 
 module load <hifiasm_module>
 
-hifiasm -o <prefix> -t 16 <your_options> \
+hifiasm -o <prefix> -t 32 <your_options> \
 /lisc/data/scratch/course/2026w300485/course_data/HiFi_data/<your_species_reads> \
 2> <prefix>.hifiasm.log
 ```
-
-A few things to notice:
-
-- **The read file is still needed**, even though the error correction
-  has already been done. hifiasm reads it again to rebuild its k-mer
-  histogram.
-- hifiasm writes its progress report to the screen as "standard error".
-  The last line, `2> <prefix>.hifiasm.log`, sends it to a log file
-  instead, so that you can read it later.
-- For a Hi-C run, add `--h1 <path_to_R1> --h2 <path_to_R2>` before the
-  HiFi reads. Aligning the Hi-C reads takes extra time, so ask for 24
-  hours instead.
 
 **Check with one of the instructors before submitting.** Then submit it
 as usual:
@@ -534,111 +386,13 @@ as usual:
 sbatch <your_script>.sh
 ```
 
-A few minutes after your job starts, check that hifiasm really found the
-saved files:
+The assembly will run overnight, and you will get an email when it
+starts and when it finishes. If you're curious, you can watch it work by
+looking at the end of the log file:
 
 ``` text
-grep "loaded corrected reads" <prefix>.hifiasm.log
+tail <prefix>.hifiasm.log
 ```
-
-If nothing is printed, hifiasm has started error correction from
-scratch, which will take many hours. Cancel the job with
-`scancel <job_id>`, then check your links and your prefix.
-
-## 7. Reading the log file
-
-When your job has finished, the log file is the first place to look.
-Start with the k-mer histogram and the peaks:
-
-``` text
-grep "ha_hist_line" <prefix>.hifiasm.log | head -100
-grep "highest\|left:\|right:\|peak_hom" <prefix>.hifiasm.log
-```
-
-The histogram lines draw a little bar chart with `*` characters, one
-line per coverage value. Does it look like your GenomeScope plot? Then
-look at what hifiasm decided:
-
-``` text
-grep "homozygous read coverage threshold\|purge duplication coverage threshold" <prefix>.hifiasm.log
-```
-
-Compare these numbers with the predictions in your Part A table. **Did
-hifiasm find the peaks you expected?** If not, what do you think went
-wrong, and which option would you use to fix it in your next run?
-
-## 8. The output files
-
-List the contents of your run directory:
-
-``` text
-ls -lh
-```
-
-All of the assemblies are in GFA format (`.gfa`), the "graph fasta"
-format you saw in the lecture. Depending on the options you used, you
-will find:
-
-``` text
-<prefix>.bp.r_utg.gfa       raw unitig graph (everything)
-<prefix>.bp.p_utg.gfa       processed unitig graph (error bubbles removed)
-<prefix>.bp.p_ctg.gfa       primary contigs (default run)
-<prefix>.bp.hap1.p_ctg.gfa  partially phased haplotype 1 (default run)
-<prefix>.bp.hap2.p_ctg.gfa  partially phased haplotype 2 (default run)
-<prefix>.p_ctg.gfa          primary contigs (with --primary or -l0)
-<prefix>.a_ctg.gfa          alternate contigs (with --primary or -l0)
-<prefix>.hic.hap1.p_ctg.gfa fully phased haplotype 1 (with Hi-C)
-<prefix>.hic.hap2.p_ctg.gfa fully phased haplotype 2 (with Hi-C)
-*.noseq.gfa                 the same graphs without sequences, for viewing in Bandage
-*.lowQ.bed                  regions of the contigs that hifiasm is unsure about
-```
-
-In a GFA file, each contig is on a line starting with `S`. The second
-column is the contig name and the third is its sequence. That means we
-can already get a quick idea of the assembly size with `awk`:
-
-``` text
-for f in *p_ctg.gfa; do
-  echo $f
-  awk '/^S/{n++; len+=length($3)} END{print n, "contigs,", len, "bp"}' $f
-done
-```
-
-Next week we will convert the assemblies to FASTA with **gfatools** and
-calculate proper statistics with **gfastats**, but these two numbers are
-enough to start comparing runs. Collect your results in a table like
-this:
-
-| Run     | Options | `peak_het` | `peak_hom` | Assembly file | Contigs | Total length (bp) | Total length ÷ genome size |
-|---------|---------|------------|------------|---------------|---------|-------------------|----------------------------|
-| default |         |            |            |               |         |                   |                            |
-| plan    |         |            |            |               |         |                   |                            |
-| test    |         |            |            |               |         |                   |                            |
-
-Were your predictions from Part D right?
-
-## 9. When something looks wrong
-
-Here are the most common problems, based on the hifiasm documentation
-and FAQ (<https://hifiasm.readthedocs.io/en/latest/faq.html>):
-
-| What you see                                                          | Likely cause                                          | What to try                                                                                       |
-|-----------------------------------------------------------------------|-------------------------------------------------------|---------------------------------------------------------------------------------------------------|
-| Primary or haplotype assembly much larger than the genome size        | Not enough purging, or the wrong homozygous coverage  | Check the coverage threshold in the log; set `--hom-cov`; lower `-s`                              |
-| hap1 much larger than hap2                                            | High heterozygosity, or the wrong homozygous coverage | Lower `-s`; set `--hom-cov`                                                                       |
-| Both Hi-C haplotypes much larger than the genome size                 | hifiasm thinks most of the genome is homozygous       | Check `# heterozygous bases` vs `# homozygous bases` in the log; set `--hom-cov`                  |
-| Inbred genome, primary assembly too small                             | Purging removed real sequence                         | `-l0`                                                                                             |
-| No clear peaks in the k-mer histogram                                 | Coverage too low, or contamination                    | Go back to GenomeScope; check for contamination (BlobToolKit, later in the course)                |
-| Polyploid primary assembly much larger than the monoploid genome size | hifiasm purges only once, assuming two haplotypes     | Set `--n-hap`; extra rounds of purge_dups afterwards                                              |
-| Very fragmented assembly                                              | Repeats                                               | Raise `-D` or `-N` (fresh run, slow); a larger `--purge-max` (primary only, may collapse repeats) |
-
-## 10. Before you go
-
-Bring your results table and your Part B answers to the next class,
-where we will check the quality of the assemblies with gfastats, BUSCO,
-and Merqury. Think about this question before then: **is the assembly
-whose size is closest to the GenomeScope estimate automatically the best
-one?** What else would you want to know before you decide?
 
 ## Further reading
 
