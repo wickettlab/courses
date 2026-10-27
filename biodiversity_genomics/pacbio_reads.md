@@ -109,6 +109,7 @@ The options we will be using with FastK are:
 -P: Path to directory for working/temp files
 -M: Memory (should match SBATCH option)
 -k: k-mer size (will discuss in class)
+-t: tells FastK to save the k-mer table itself, not just the histogram of k-mer counts. You will need this table for downstream analyses, please add -t4 flag to your script
 ```
 
 For this job, we will use 8 CPUs per task, 16G of memory, and an
@@ -142,8 +143,7 @@ Histex -G <path_to_.hist_file> > <path_to_output_directory>/<species_prefix>.his
 \*AND\*\*
 
 ``` text
-genomescope.R -i <path_to_.histo_file> -o <output_file_name> -k <k-mer_size> \
-> -p <known_ploidy_of_species>
+genomescope.R -i <path_to_.histo_file> -o <output_file_name> -k <k-mer_size> -p <known_ploidy_of_species>
 ```
 
 For our data, use 16 CPUs and 8G memory, and an estimated run time of
@@ -194,6 +194,7 @@ like:
 ``` text
 module load Conda
 conda activate smudgeplot-0.5.3
+module load FastK #please activate FastK again as smudgeplot relies on FastK scripts
 ```
 
 With that in your script, you will be able to run SmudgePlot just like

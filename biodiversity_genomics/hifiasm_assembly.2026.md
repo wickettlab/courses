@@ -375,8 +375,7 @@ Your submission script should look something like this:
 module load <hifiasm_module>
 
 hifiasm -o <prefix> -t 32 <your_options> \
-/lisc/data/scratch/course/2026w300485/course_data/HiFi_data/<your_species_reads> \
-2> <prefix>.hifiasm.log
+/lisc/data/scratch/course/2026w300485/course_data/HiFi_data/<your_species_reads> 
 ```
 
 **Check with one of the instructors before submitting.** Then submit it
