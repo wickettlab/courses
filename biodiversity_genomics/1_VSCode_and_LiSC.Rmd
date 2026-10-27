@@ -1,0 +1,266 @@
+---
+output:
+  pdf_document:
+    highlight: breezedark
+    pandoc_args:
+      - "-V"
+      - "papersize=a4"
+      - "-V"
+      - "geometry:margin=2.5cm"
+---
+
+\begin{center}
+Biodiversity Genomics \\[1em]
+{\Large \textbf {Getting Started with VS Code}} \\[1em]
+Daria Shipilina \\[1em]
+
+\end{center}
+
+The goal with this document is to walk you through setting up your remote development environment for this course. Here we will learn basic navigation in VSCode, later on the day we learn same steps in command line.
+
+
+## 1. Connect to Remote Server in VS Code
+1. Open VSCode, install the Remote Development extension \
+
+Open Extensions (click the icon that looks like four small squares with one detached or press Ctrl+Shift+X / Cmd+Shift+X). Search "Remote - SSH" by Microsoft and install it.
+
+2. Make sure SSH is set up on your machine
+
+  Windows: Settings > Apps > Optional Features > OpenSSH Client \
+  Mac/Linux: usually built-in
+
+
+3. Open the Remote-SSH connection panel \
+
+Look at the bottom-left corner of the VS Code window — there's a small green (or blue) rectangular icon that looks like two arrows facing each other (><). This is the "Open a Remote Window" button. Click it, or use the Command Palette (Ctrl+Shift+P / Cmd+Shift+P — command bar at the top). \ Select "Connect to Host..." from the menu that pops up.
+
+4. Enter the connection details
+Choose "Add New SSH Host," type:
+
+`ssh username@login01.lisc.univie.ac.at`
+
+**Don't forget to replace** ```username``` **with your own lisc username!**
+
+Confirm the SSH config file to save to.
+
+5. Connect and authenticate \
+
+Pick your host from the list. A new VS Code window opens (you'll see it as a separate window/tab). Confirm the fingerprint if prompted, then enter your password/passphrase.
+
+6. Wait for VS Code Server to install \
+
+Watch the bottom-right notification popups for progress. Once done, the bottom-left icon updates to show the host name you're connected to (e.g., "SSH: myserver").
+
+7. What login looks like the second time \
+
+The next time you connect, it will be much faster: click the same "Open a Remote Window" icon, choose your host from the list, and enter your permanent password when prompted. You won't see the fingerprint confirmation again, and VS Code Server is already installed on the cluster, so there's no install.
+
+## 2. Prepare Your Workspace
+
+1. Adjust Your Workspace
+
+Keep the Explorer open in the left sidebar, and open the integrated Terminal via View > Terminal (or Ctrl+`/Cmd+`). You can toggle the whole sidebar on/off with View > Appearance > Show Activity Bar.
+
+Bonus: you can change VS Code's color theme by opening the Command Palette (Ctrl+Shift+P / Cmd+Shift+P) and typing "Color Theme", or with the shortcut Ctrl+K Ctrl+T (Cmd+K Cmd+T on Mac).
+
+2. Open your work folder 
+
+Use File > Open Folder (top menu), or the folder icon in the Explorer view (the top icon in the left sidebar, looks like two overlapping documents/pages).
+
+Paste this path to our course folder:
+ **PROVIDE PATH HERE** 
+
+## 3. Organize Your Project Folder
+
+Before running any analysis, it helps to agree on a folder structure so results, scripts, and logs don't end up scattered. For this course we'll use the structure below — each stage gets its own numbered folder so the order is obvious at a glance, and `scripts/`, `logs/` and `run_log.md` sit alongside them for things that apply across stages:
+
+```text
+genome_assembly_project/
+|-- 01_qc/
+|-- 02_assembly/
+|-- 03_evaluation/
+|-- 04_annotation/
+|-- scripts/             # job scripts and code you write
+|-- logs/                # output/error logs produced by your jobs
+`-- run_log.md          # manual log: what was run, when, why, parameter choices
+```
+**Exercise: create this structure**
+
+1. In the Explorer sidebar, right-click your course folder and select "New Folder" to create `genome_assembly_project/`. Open it.
+2. Inside it, use "New Folder" again to create folder: `01_qc/`, we'll use it next time.
+3. In the main directory right-click and select "New File" to create `run_log.md`. This is your running log of what you did, when, and why — start today's entry now:
+
+```text
+## 2026-09-07
+- Set up VS Code remote connection to LiSC
+- Created genome_assembly_project/ folder structure
+```
+
+Keep adding to this log throughout the course — it's the one place to check what you ran and why, especially useful when troubleshooting later.
+
+**WELL DONE!**
+
+
+<!--
+
+## 2. Navigating Your LiSC Directories
+
+MODIFY THIS:
+
+There are two directories you will use regularly on LiSC, and it's important to understand the difference between them.
+
+Your personal space, where your account starts by default:
+
+```text
+/lisc/home/users/[your username]
+```
+
+The shared department space, which all members of the division/group can view but cannot write to:
+
+```text
+/lisc/project/botany/
+```
+
+For this course, your working files and analyses will live in your course scratch directory instead, following the same structure introduced in *Command Line Basics*:
+
+```text
+/lisc/data/scratch/course/2025w300485/[your username]
+```
+
+This is the directory you should ```cd``` into for coursework, and where the project folder structure below should be created.
+
+## 5. Setting Up Your Working Folder
+
+Within your course scratch directory, make one folder per project, using the following structure:
+
+```raw_data``` — a folder containing symbolic links to (or, rarely, actual copies of) raw data files
+
+```[name of your GitHub repository]``` — your cloned GitHub folder (set up in Section 6 below); this is where you will take daily notes and develop code, with GitHub providing version control
+
+```[analysis folder, e.g. MAFFT]``` — one folder per analysis or piece of software, used to store large intermediate files. If files are small (under 50 Mb), you can keep them inside the GitHub folder instead.
+
+<!-- ## 6. Connecting Your GitHub Repository to LiSC
+
+The first time you use GitHub on the cluster, you will need to generate an SSH key. From your home directory, run:
+
+```text
+cd ~
+ssh-keygen -t ed25519 -C "[your email]"
+```
+
+At the prompt, you should see something like:
+
+```text
+Enter file in which to save the key (/home/[your username]/.ssh/id_ed25519):
+```
+
+Press **Enter** to accept the default path.
+
+When asked:
+
+```text
+Enter passphrase (empty for no passphrase):
+```
+
+either type a passphrase (recommended) and press Enter, or press Enter twice to leave it empty.
+
+**Note:** If a key already exists at the default path, ```ssh-keygen``` will ask whether to overwrite it. Overwriting an existing key will break any connections that rely on the old one, so if you're unsure whether you already have a key, check first rather than pressing Enter through the prompt.
+
+You will see output similar to this:
+
+```text
+The key fingerprint is:
+SHA256:oxzl9k8I35GEotcdnnSELlSQDAEA37NW1RXi5zK8qo8 [your email]
+The key's randomart image is:
++--[ED25519 256]--+
+|  ......o+o=oo+. |
+|   . .   .+ooo   |
+|    . o +...= o  |
+|       B o.*.B   |
+|      = S ..X .  |
+|     o = = o =   |
+|      o   + +    |
+|         . +     |
+|        Eoo .    |
++----[SHA256]-----+
+```
+
+This confirms the key was created successfully; you do not need to do anything further with this output.
+
+Next, display your public key so you can copy it:
+
+```text
+cat ~/.ssh/id_ed25519.pub
+```
+
+This will print a single long line to the screen — copy the entire line.
+
+Switch to your browser, open GitHub, and go to: your avatar → Settings → SSH and GPG keys → New SSH key. Paste the line you copied.
+
+Your key is now set up. Back on LiSC, test the connection to GitHub:
+
+```text
+ssh -vT git@github.com
+```
+
+If everything is configured correctly, this will run without asking you for a password (you may see some informational text, which is expected — you are only checking that it does not ask you to authenticate).
+
+Now move to your project folder (see Section 5) and clone your repository:
+
+```text
+git clone https://github.com/[your GitHub username]/[your repository].git
+```
+
+This creates a copy of your repository inside your current directory. You should now see a new folder named after your repository, containing the files from GitHub (including your ```README.md```).
+
+Move into that folder and set your identity for this and future commits:
+
+```text
+cd [your repository]
+git remote set-url origin \
+    https://github.com/[your GitHub username]/[your repository].git
+git config --global user.name "[your name]"
+git config --global user.email "[your email]"
+```
+
+You should now be able to use GitHub from inside VS Code as well as from the terminal.
+
+For a walkthrough of using GitHub inside VS Code specifically, see this tutorial from minute 4:00: https://www.youtube.com/watch?v=z5jZ9lrSpqk
+
+**Minimal GitHub cheatsheet:**
+
+```text
+git clone URL         move a repository to your current location
+git status             see what has changed since your last commit
+git add .              stage all changed files to be committed
+git commit -m "message"    save staged changes with a description
+git push               send committed changes to GitHub
+git pull               fetch and merge changes from GitHub
+```
+
+
+
+## 7. Your Daily Log File
+
+In your GitHub folder, create a log file named ```[name of your repository].log```. This is your personal project log and scratchpad — use it to develop short scripts and add notes as you work.
+
+**Note — Test:**
+
+1. Modify your log in the VS Code text editor and add today's date.
+2. Document today's work.
+
+
+
+3. Commit your changes to GitHub.
+
+## 8. Loading Modules
+
+*(To be added.)*
+
+## 9. Extra Resources
+
+https://ksenia-bioinfo.medium.com/vscode-set-up-for-bioinformatics-1d2bf881c910
+
+https://www.youtube.com/watch?app=desktop&v=AB71rH3A4xc
+
+-->
