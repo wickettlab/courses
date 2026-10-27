@@ -216,6 +216,10 @@ smudgeplot hetmers \
 -o <output_directory> \ # You will create this first
 --verbose \
 <path_to_.ktab_file>
+
+# use the .smu file to infer ploidy and create smudgeplot
+smudgeplot all -o <output_directory> <path_to_.smu_file>
+
 ```
 
 **Create a submission script for running SmudgePlot. If you are feeling
