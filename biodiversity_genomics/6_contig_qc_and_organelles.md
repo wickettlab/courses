@@ -112,8 +112,9 @@ If you are curious, also download `Dsuperbus3_run2.bp.r_utg.noseq.gfa`, the raw 
 
 If you want to explore depth oof your contig coverage and scout for possible mtgenomes, create a new version of the `Dsuperbus3_run2.bp.r_utg.noseq.gfa` file using:
 
-
-'sed -E '/^S\t/ s/\trd:i:([0-9]+)/\tDP:f:\1/' asm.r_utg.noseq.gfa > asm.r_utg.noseq.DP.gfa'
+```
+sed -E '/^S\t/ s/\trd:i:([0-9]+)/\tDP:f:\1/' asm.r_utg.noseq.gfa > asm.r_utg.noseq.DP.gfa
+```
 
 ### Walkthrough of the Bandage interface
 
