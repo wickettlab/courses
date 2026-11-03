@@ -1,6 +1,6 @@
-# Basic Methods in Structural and Evolutionary Botany
+# Concepts and methods in evolution, systematics and biogeography of plants
 
-## Phylogenetics In-Class Exercises and Protocol Assignment
+## Phylogenetics In-Class Exercises
 
 ### Norman Wickett
 ### 4 November, 2026
