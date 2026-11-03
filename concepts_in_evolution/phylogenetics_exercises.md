@@ -16,7 +16,7 @@ phylogenetics.
 For today’s exercise, you will learn more about the *process* of
 building a phylogeny and *interpreting* trees. The exercises below are
 connected to the lecture that will be provided in today’s
-class; the lecture slides are available on Moodle. Lectures will touch
+class; the lecture slides are available on Moodle. The lecture will touch
 on two main topics: (1) The basics of phylogenetics and parsimony, and (2) DNA
 sequencing and molecular phylogenetics. If you are assigned Phylogenetics for
 your presentation please contact me
@@ -40,23 +40,18 @@ By the end of today’s class you should:
 -   Perform the steps necessary to generate a phylogeny from DNA
     sequence data
 -   Understand how to visualize and interpret phylogenies
--   Understand how to reconstruct and interpret ancestral character
-    states
 
 This is a lot of information! Don’t get discouraged - I’m here to help,
 and remember that the overall goal is to demystify phylogenetics a
-little bit, not to become an expert. I’ll be co-teaching
-<a href="https://ufind.univie.ac.at/en/course.html?lv=300029&semester=2026S" target="_blank">
-molecular phylogenetics and phylogenomics</a> later this semester and
-that course will go into much more detail.
+little bit, not to become an expert.
 
 # Phylogenetics Fundamentals
 
 By this point you should have already heard a short lecture on the
 fundamentals of phylogenetics, particularly about the concepts of
-homology, building a matrix of h omologous characters, and using the
+homology, building a matrix of homologous characters, and using the
 matrix to find the “best” tree using the parsimony optimality criterion.
-The following exercise is a bit silly, but it is meant t o reinforce
+The following exercise is a bit silly, but it is meant to reinforce
 these concepts.
 
 ## The Character Matrix and Parsimony
@@ -497,7 +492,7 @@ email address at the bottom to be notified when the analysis is done and
 get a link to the results. ***You must use your UniVie email address or
 it will not work!***
 
-**Run a total of 12 analyses:**
+**Here are 12 analyses that you could run (try a few):**
 
 1.  rbcL with Auto model detection
 2.  rbcL with JC
