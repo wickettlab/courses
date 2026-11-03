@@ -462,20 +462,22 @@ IQ-TREE is a fast and accurate program that will reconstruct
 phylogenetic trees under Maximum Likelihood, allowing you to specify
 specific models of DNA sequence evolution or have it pick the best one
 based on your data. One of the authors of IQ-TREE is a professor at the
-University of Vienna, which may make it less surprising that we can
-access the IQ-TREE web server at this address:
+University of Vienna; normally yu can access the IQ-TREE web server at this address:
 
 <http://iqtree.cibiv.univie.ac.at/>
 
-In the `Input Data` box near the top of the page, browse and upload one
-of your aligned FASTA files (again, I suggest doing rbcL first). You can
-leave everything else as default, but if you want to be safe you can
-change the `Sequence type` selection from `Auto-detect` to `DNA`.
+But the site is currently down for maintenance. Instead, we will use a different
+online version of IQ-TREE that can be found here:
 
-Next, you will want to explore the `Substitution Model Options` box. Go
+<https://phylogeny.fr/tools/iqtree>
+
+In the `Upload a FASTA file` area near the top of the page, browse and upload one
+of your aligned FASTA files (again, I suggest doing rbcL first) and change the Sequence Type to
+"Nucleotide." 
+
+Next, you will want to explore the `Substitution Model Options` dropdown menu. Go
 ahead and leave it as `Auto` for now, but after you have run this
-analysis, run two additional analyses: Under the DNA heading in the
-dropdown menu, choose JC for one analysis and GTR for another. JC is the
+analysis, run two additional analyses: choose JC for one analysis and GTR for another. JC is the
 Jukes-Cantor model and is considered to be the “simplest” model, in
 which the rate of all substitutions is equal. GTR on the other hand is
 one of the most complicated models, with a separate rate for all
