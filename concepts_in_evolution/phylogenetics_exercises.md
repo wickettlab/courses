@@ -3,7 +3,7 @@
 ## Phylogenetics In-Class Exercises and Protocol Assignment
 
 ### Norman Wickett
-### 6 March, 2026
+### 4 November, 2026
 
 These exercises and explanations were developed with, and heavily
 influenced by a previous postdoc who worked in my group in Chicago,
