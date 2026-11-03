@@ -110,6 +110,11 @@ hifiasm writes every graph twice: with sequences (`*.gfa`) and without (`*.noseq
 
 If you are curious, also download `Dsuperbus3_run2.bp.r_utg.noseq.gfa`, the raw unitig graph before hifiasm resolved it into contigs. It is much larger and messier, and Bandage may need several minutes to draw it.
 
+If you want to explore depth oof your contig coverage and scout for possible mtgenomes, create a new version of the `Dsuperbus3_run2.bp.r_utg.noseq.gfa` file using:
+
+
+'sed -E '/^S\t/ s/\trd:i:([0-9]+)/\tDP:f:\1/' asm.r_utg.noseq.gfa > asm.r_utg.noseq.DP.gfa'
+
 ### Walkthrough of the Bandage interface
 
 ![Bandage interface with numbered panels](images/bandage_interface.png)
