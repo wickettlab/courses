@@ -482,17 +482,10 @@ Jukes-Cantor model and is considered to be the “simplest” model, in
 which the rate of all substitutions is equal. GTR on the other hand is
 one of the most complicated models, with a separate rate for all
 substitutions, including different rates, for example, for A -&gt; T and
-T -&gt; A. Click both boxes for `Rate heterogeneity` as well; these
+T -&gt; A. Click the boxes for `FreeRate heterogeneity` as well; these
 options just allow for different sites in your alignment to have
-different rates.
-
-Now for the `Branch Support Analysis`. Leave the default `Ultrafast`
-button checked. In fact, you can use all the default settings here.
-
-There is no need to change anything else, but you may want to enter your
-email address at the bottom to be notified when the analysis is done and
-get a link to the results. ***You must use your UniVie email address or
-it will not work!***
+different rates. For the `Bootstrap Analysis,` leave the default `Ultrafast Bootstrap
+(1000 alignments)` button selected. For everything else, simply leave as the default settings.
 
 **Here are 12 analyses that you could run (try a few):**
 
@@ -511,20 +504,10 @@ it will not work!***
 
 For all analyses, be sure to include a bootstrap analysis.
 
-When an analysis is finished, click the link in the email and you’ll see
-a representation of the tree. But we can’t do much with this tree, so we
-will want to download the results. You can do this by clicking
-`DOWNLOAD SELECTED JOBS` in the lower left corner of the browser window.
-This will download a zip file that will unzip into a folder that is
-named as your email address. Inside that folder there is another folder
-that just has a number for its name. Inside that folder is your IQ-TREE
-output. The tree file (in Newick format) that you really want to look at
-is the one that ends with `treefile`. So my rbcL tree file would be
-named something like this:
-
-    rbcL.ALN.fa.treefile
-
-Go ahead and open that tree file up in the iTOL online tree viewer we
+Phylogeny.fr actually has a nice tree viewer built into the website.
+Feel free to play around with visualisation there. But you can also
+export the tree as a newick file using the 'Export' button, and you
+can then open that exported file up in the iTOL online tree viewer we
 used earlier. Root your tree with *Thuja plicata* (Western Red Cedar and
 one of my favourite trees) but don’t ignore the branch lengths this
 time. Use the `Advanced` settings to view the boostrap values by
