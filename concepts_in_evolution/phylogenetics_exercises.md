@@ -15,21 +15,13 @@ phylogenetics.
 
 For today’s exercise, you will learn more about the *process* of
 building a phylogeny and *interpreting* trees. The exercises below are
-connected to a few short(ish) lectures that will be provided in today’s
+connected to the lecture that will be provided in today’s
 class; the lecture slides are available on Moodle. Lectures will touch
-on three topics: (1) The basics of phylogenetics and parsimony, (2) DNA
-sequencing and molecular phylogenetics, and (3) Ancestral character
-state reconstruction.
-
-At the end of this document, you will find a description of what should
-be done for the phylogenetics section of the protocol, which will
-consist of analyses of DNA sequence data and character states for
-Primulaceae, so that it is connected to the work you have done in the
-first half of this course. If you are assigned Phylogenetics for either
-your presentation or your section of the protocol, and you have
-questions or would like some help, please feel free to contact me
+on two main topics: (1) The basics of phylogenetics and parsimony, and (2) DNA
+sequencing and molecular phylogenetics. If you are assigned Phylogenetics for
+your presentation please contact me
 (<a href="mailto:norman.wickett@univie.ac.at">norman.wickett@univie.ac.at</a>)
-and make an appointment to see me in my office.
+and make an appointment to see me in my office to discuss what to include.
 
 In this tutorial, files that you may need to create, or commands that
 you may have to enter or select for running online phylogenetics tools
