@@ -414,6 +414,14 @@ can access here:
 
 <https://mafft.cbrc.jp/alignment/server/index.html>
 
+**Note that the MAFFT web server can sometimes be down.** If that is the case,
+you can use:
+
+<https://www.ebi.ac.uk/jdispatcher/msa/mafft>
+
+It's not quite as detailed, so you may not be able to do everything below. But
+it will still produce an alignment.
+
 Once you have navigated to the MAFFT site, use the `Choose file` button
 to upload one of your FASTA files. I would suggest trying rbcL first, as
 it’s a very “clean” dataset. You are certainly welcom to play around
