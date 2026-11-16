@@ -1,7 +1,9 @@
 # Exercise: Screening the Assembly for Contamination with BlobToolKit
 
 Biodiversity Genomics
+
 Norman Wickett and Daria Shipilina
+
 17 November, 2026
 
 ## 1. Introduction
