@@ -130,6 +130,8 @@ Sections 3, 4 and 5 go together into job 2. Request 4 CPUs, 50G memory and 12 ho
 
 ## 6. Manual Curation
 
+## 7. Rerun stats
+
 While everything is mapping, we will use the Pretext files we created for you before to learn how manual curation works. From there, we will move on to your personal laptops and do the manual curation.
 
 Install PretextView on your laptop:
