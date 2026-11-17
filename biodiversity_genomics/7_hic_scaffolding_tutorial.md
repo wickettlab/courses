@@ -119,7 +119,7 @@ module load Conda
 conda activate /lisc/data/scratch/botany/wickett_lab/Dasha/D_superbus_assembly/envs/pretext
 
 PretextMap -o asm.pretext < asm.pairs
-PretextSnapshot --sequences "=full" --map asm.pretext --prefix asm. --folder .
+#PretextSnapshot --sequences "=full" --map asm.pretext --prefix asm. --folder .
 ```
 
 PretextMap builds the contact map (`asm.pretext`) that we open in PretextView. PretextSnapshot saves a picture of the full map.
