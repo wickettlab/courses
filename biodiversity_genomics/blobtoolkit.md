@@ -70,7 +70,7 @@ BUSCO_LINEAGES="eukaryota_odb12,embryophyta_odb12,viridiplantae_odb12"
 ###############################################################################
 cat > "${SAMPLESHEET}" <<EOF
 sample,datatype,datafile,library_layout
-"${TAXON_ID}",pacbio,"${READS}",SINGLE
+${TAXON_ID},pacbio,${READS},SINGLE
 EOF
 
 ###############################################################################
