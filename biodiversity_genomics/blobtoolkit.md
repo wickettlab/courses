@@ -44,11 +44,11 @@ module load Nextflow/26.04.4
 
 ### CHANGE THIS ###
 ### Delete your working folder, create a new one (can be the same name)
-BASE=/lisc/data/scratch/course/2026w300485/dasha/BlobTK  #create a new folder where analysis will run
-FASTA=/lisc/data/scratch/course/2026w300485/dasha/Dserotinus_scaffolds_final.fa  #assembly to evaluate
+BASE="/lisc/data/scratch/course/2026w300485/dasha/BlobTK"  #create a new folder where analysis will run
+FASTA="/lisc/data/scratch/course/2026w300485/dasha/Dserotinus_scaffolds_final.fa"  #assembly to evaluate
 TAXON="Dianthus serotinus"
 TAXON_ID="Dserotinus" # no spaces!
-READS=/path/to/Dserotinus_hifi.fastq.gz   # path to your raw HiFi reads (not Hi-C)
+READS="/path/to/Dserotinus_hifi.fastq.gz"   # path to your raw HiFi reads (not Hi-C)
 
 ### !COPY  BELOW AGAIN! ###
 SAMPLESHEET="${BASE}/samplesheet_blobtools.csv"
