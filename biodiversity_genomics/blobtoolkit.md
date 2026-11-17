@@ -59,10 +59,14 @@ TMPDIR="${BASE}/tmp"
 mkdir -p "${OUTDIR}" "${WORKDIR}" "${TMPDIR}"
 
 # Databases (shared databases from the lab)
-BUSCO_DB="/lisc/data/work/botany/diospyrosProj/Amin_tmp/blob_tool_kit/busco_db/v5/data/"
-TAXDUMP="/lisc/data/work/botany/diospyrosProj/Amin_tmp/blob_tool_kit/taxdump_2026_04"
-BLASTP="/lisc/data/work/botany/diospyrosProj/Amin_tmp/blob_tool_kit/blastp_blastx_db/reference_proteomes.dmnd"
-BLASTX="/lisc/data/work/botany/diospyrosProj/Amin_tmp/blob_tool_kit/blastp_blastx_db/reference_proteomes.dmnd"
+#BUSCO_DB="/lisc/data/work/botany/diospyrosProj/Amin_tmp/blob_tool_kit/busco_db/v5/data/"
+BUSCO_DB="/lisc/data/scratch/course/2026w300485/databases/data"
+#TAXDUMP="/lisc/data/work/botany/diospyrosProj/Amin_tmp/blob_tool_kit/taxdump_2026_04"
+TAXDUMP="/lisc/data/scratch/course/2026w300485/databases/taxdump_2026_04"
+#BLASTP="/lisc/data/work/botany/diospyrosProj/Amin_tmp/blob_tool_kit/blastp_blastx_db/reference_proteomes.dmnd"
+BLASTP="/lisc/data/scratch/course/2026w300485/databases/reference_proteomes.dmnd"
+#BLASTX="/lisc/data/work/botany/diospyrosProj/Amin_tmp/blob_tool_kit/blastp_blastx_db/reference_proteomes.dmnd"
+BLASTX="/lisc/data/scratch/course/2026w300485/databases/reference_proteomes.dmnd"
 BLASTN="/lisc/opt/mirror/ncbi/2026-10-25/nt.nal"
 BUSCO_LINEAGES="eukaryota_odb12,embryophyta_odb12,viridiplantae_odb12"
 
