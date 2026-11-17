@@ -47,7 +47,7 @@ BASE=/lisc/data/scratch/course/2026w300485/dasha/BlobTK  #create a new folder wh
 FASTA=/lisc/data/scratch/course/2026w300485/dasha/Dserotinus_scaffolds_final.fa  #assembly to evaluate
 TAXON="Dianthus serotinus"
 TAXON_ID="Dserotinus" # no spaces!
-
+READS=/path/to/Dserotinus_hifi.fastq.gz   # add under "CHANGE THIS"
 
 ### DON'T CHANGE THIS ###
 SAMPLESHEET="${BASE}/samplesheet_blobtools.csv"
@@ -70,7 +70,7 @@ BUSCO_LINEAGES="eukaryota_odb12,embryophyta_odb12,viridiplantae_odb12"
 ###############################################################################
 cat > "${SAMPLESHEET}" <<EOF
 sample,datatype,datafile,library_layout
-"${TAXON_ID}",pacbio,"${FASTA}",SINGLE
+"${TAXON_ID}",pacbio,"${READS}",SINGLE
 EOF
 
 ###############################################################################
