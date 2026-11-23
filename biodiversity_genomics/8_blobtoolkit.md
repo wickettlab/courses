@@ -1,7 +1,9 @@
 # Exercise: Screening the Assembly for Contamination with BlobToolKit
 
 Biodiversity Genomics
+
 Norman Wickett and Daria Shipilina
+
 17 November, 2026
 
 ## 1. Introduction
@@ -41,12 +43,14 @@ module purge
 module load Nextflow/26.04.4
 
 ### CHANGE THIS ###
-BASE=/lisc/data/scratch/course/2026w300485/dasha/BlobTK  #create a new folder where analysis will run
-FASTA=/lisc/data/scratch/course/2026w300485/dasha/Dserotinus_scaffolds_final.fa  #assembly to evaluate
+### Delete your working folder, create a new one (can be the same name)
+BASE="/lisc/data/scratch/course/2026w300485/dasha/BlobTK"  #create a new folder where analysis will run
+FASTA="/lisc/data/scratch/course/2026w300485/dasha/Dserotinus_scaffolds_final.fa"  #assembly to evaluate
 TAXON="Dianthus serotinus"
+TAXON_ID="Dserotinus" # no spaces!
+READS="/path/to/Dserotinus_hifi.fastq.gz"   # path to your raw HiFi reads (not Hi-C)
 
-
-### DON'T CHANGE THIS ###
+### !COPY  BELOW AGAIN! ###
 SAMPLESHEET="${BASE}/samplesheet_blobtools.csv"
 OUTDIR="${BASE}/results"
 WORKDIR="${BASE}/work"
@@ -55,10 +59,14 @@ TMPDIR="${BASE}/tmp"
 mkdir -p "${OUTDIR}" "${WORKDIR}" "${TMPDIR}"
 
 # Databases (shared databases from the lab)
-BUSCO_DB="/lisc/data/work/botany/diospyrosProj/Amin_tmp/blob_tool_kit/busco_db/v5/data/"
-TAXDUMP="/lisc/data/work/botany/diospyrosProj/Amin_tmp/blob_tool_kit/taxdump_2026_04"
-BLASTP="/lisc/data/work/botany/diospyrosProj/Amin_tmp/blob_tool_kit/blastp_blastx_db/reference_proteomes.dmnd"
-BLASTX="/lisc/data/work/botany/diospyrosProj/Amin_tmp/blob_tool_kit/blastp_blastx_db/reference_proteomes.dmnd"
+#BUSCO_DB="/lisc/data/work/botany/diospyrosProj/Amin_tmp/blob_tool_kit/busco_db/v5/data/"
+BUSCO_DB="/lisc/data/scratch/course/2026w300485/databases/data"
+#TAXDUMP="/lisc/data/work/botany/diospyrosProj/Amin_tmp/blob_tool_kit/taxdump_2026_04"
+TAXDUMP="/lisc/data/scratch/course/2026w300485/databases/taxdump_2026_04"
+#BLASTP="/lisc/data/work/botany/diospyrosProj/Amin_tmp/blob_tool_kit/blastp_blastx_db/reference_proteomes.dmnd"
+BLASTP="/lisc/data/scratch/course/2026w300485/databases/reference_proteomes.dmnd"
+#BLASTX="/lisc/data/work/botany/diospyrosProj/Amin_tmp/blob_tool_kit/blastp_blastx_db/reference_proteomes.dmnd"
+BLASTX="/lisc/data/scratch/course/2026w300485/databases/reference_proteomes.dmnd"
 BLASTN="/lisc/opt/mirror/ncbi/2026-10-25/nt.nal"
 BUSCO_LINEAGES="eukaryota_odb12,embryophyta_odb12,viridiplantae_odb12"
 
@@ -67,7 +75,7 @@ BUSCO_LINEAGES="eukaryota_odb12,embryophyta_odb12,viridiplantae_odb12"
 ###############################################################################
 cat > "${SAMPLESHEET}" <<EOF
 sample,datatype,datafile,library_layout
-dserotinus_hifi,pacbio,"${FASTA}",SINGLE
+${TAXON_ID},pacbio,${READS},SINGLE
 EOF
 
 ###############################################################################

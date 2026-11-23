@@ -119,7 +119,7 @@ module load Conda
 conda activate /lisc/data/scratch/botany/wickett_lab/Dasha/D_superbus_assembly/envs/pretext
 
 PretextMap -o asm.pretext < asm.pairs
-PretextSnapshot --sequences "=full" --map asm.pretext --prefix asm. --folder .
+#PretextSnapshot --sequences "=full" --map asm.pretext --prefix asm. --folder .
 ```
 
 PretextMap builds the contact map (`asm.pretext`) that we open in PretextView. PretextSnapshot saves a picture of the full map.
@@ -129,6 +129,8 @@ PretextMap builds the contact map (`asm.pretext`) that we open in PretextView. P
 Sections 3, 4 and 5 go together into job 2. Request 4 CPUs, 50G memory and 12 hours.
 
 ## 6. Manual Curation
+
+## 7. Rerun stats
 
 While everything is mapping, we will use the Pretext files we created for you before to learn how manual curation works. From there, we will move on to your personal laptops and do the manual curation.
 
