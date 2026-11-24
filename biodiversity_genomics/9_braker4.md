@@ -209,7 +209,7 @@ Snakemake stays in your tmux window on the login node and sends each step to Slu
 
 ## 11. Watch the Run
 
-Go back in with `tmux attach -t braker4`. After each finished step Snakemake prints a line like `12 of 40 steps (30%) done`; the run is finished when both numbers match and it says `(100%) done`. To see your jobs in the Slurm queue, run `squeue -u $USER` (`$USER` is filled in with your username; `R` = running, `PD` = waiting). Expect about an hour, plus waiting time in the queue.
+Go back in with `screen -r braker4`. After each finished step Snakemake prints a line like `12 of 40 steps (30%) done`; the run is finished when both numbers match and it says `(100%) done`. To see your jobs in the Slurm queue, run `squeue -u $USER` (`$USER` is filled in with your username; `R` = running, `PD` = waiting). Expect about an hour, plus waiting time in the queue.
 
 If a step fails, read the lines just above `Error in rule`, or open the log file it names (in `logs/Dsero_test/`). After fixing the problem, run `bash run_slurm.sh` again: finished steps are not repeated. If Snakemake says the folder is locked, first run `snakemake --snakefile ../BRAKER4/Snakefile --unlock`.
 
@@ -235,12 +235,12 @@ The test genome is 5 Mb of an 848 Mb genome (less than 1%), so a small gene set 
 
 # Part 2: Annotating Your Own Genome
 
-## 13. What Is Different from the Test
+## 1. What Is Different from the Test
 
 You run BRAKER4 exactly as in Part 1, with the same `run_slurm.sh`. Four things change:
 
-- **Genome:** your own genome instead of the 5 Mb test piece.
-- **Masking:** you soft-mask your genome yourself with your EDTA results, instead of letting BRAKER4 mask it with Red.
+- **Genome:** your own genome instead of the 5 Mb test piece, we will remove short contigs beforehand
+- **Masking:** you soft-mask your genome yourself with your EDTA results, instead of letting BRAKER4 mask it with Red (standard option).
 - **RNA-seq:** all RNA-seq libraries of your species instead of the two test libraries.
 - **Time:** the whole run takes 2–4 days, so each job is allowed up to 3 days instead of 4 hours.
 
@@ -248,7 +248,7 @@ Everyone runs their own annotation. Start as early as you can: if something goes
 
 You will make a new run folder, copy `samples.csv` and `config.ini` (and `run_slurm.sh`) from the shared folder again, soft-mask your genome, and edit `samples.csv` and `config.ini` in VS Code. Sections 14–19 go through every step.
 
-## 14. Make Your Run Folder and Copy the Run Files
+## 2. Make Your Run Folder and Copy the Run Files
 
 Name the folder after your species, for example `Dserotinus_full`, `Dsuperbus_full` or `Pnigrum_full`. It **must** sit inside your `BRAKER` folder, next to `BRAKER4`, because `run_slurm.sh` looks for the code one folder up (`../BRAKER4/Snakefile`).
 
@@ -264,86 +264,61 @@ ls -l
 
 You should see the three files. `run_slurm.sh` needs no changes.
 
-## 15. Your Genome
 
-> **[? NORM]** Students choose their own genome. Is this right? Which file should they use (for example the scaffolded assembly after Hi-C, or the hifiasm primary assembly)? ?
+## 3. Your Genome
+Short contigs rarely contain a complete gene. They make the run much longer without making the prediction better (the BRAKER4 documentation warns about this), so you remove them first. 
 
-> **[? NORM]** Should students remove anything from the genome before annotation, for example scaffolds shorter than some length, or organelle/contaminant scaffolds flagged by BlobToolKit? If yes, which cutoff, and we add the step here. ?
-
-## 16. Soft-mask Your Genome with Your EDTA Results
-
-Repeats should be masked before gene prediction, so that transposable elements are not mistaken for genes. BRAKER4 needs a **soft-masked** genome: repeats in lowercase letters (`acgt`), everything else in uppercase (`ACGT`). This works better than hard-masking (repeats replaced by `N`), because the gene finders can still read the sequence. You already annotated the transposable elements of your genome with EDTA; here you turn that annotation into a soft-masked genome. It takes a few minutes.
-
-
-**1. Find your EDTA annotation.** EDTA writes the whole-genome TE annotation to a file ending in `.EDTA.TEanno.gff3`. Search your folder for it:
+**1. Go to your run folder and set the genome and the cutoff.**
 
 ```bash
-find /lisc/data/scratch/course/2026w300485/username -name "*.EDTA.TEanno.gff3"        # <- CHANGE username
+cd /lisc/data/scratch/course/2026w300485/username/BRAKER/Dserotinus_full     # <- CHANGE username and folder
+GENOME=MY_GENOME_PATH        # <- CHANGE: full path of your assembly
+MIN=10000                    # minimum length in bp; shorter sequences are removed
+ls -lh $GENOME
 ```
 
-If several files are listed, take the one from the EDTA run on your whole genome (the same genome file you annotate now).
+`ls` must list your genome. The variables only exist in this terminal; if you start again later, set them again.
 
-**3. Save both paths in variables**, so you don't have to type them again:
+**2. Measure every sequence.**
 
 ```bash
-GENOME=MY_GENOME_PATH        # <- CHANGE: full path of your genome (section 15)
-EDTA=MY_EDTA_GFF3            # <- CHANGE: full path of the .EDTA.TEanno.gff3 file from step 2
-ls -lh $GENOME $EDTA
+awk '/^>/ {name = substr($1, 2); next} {len[name] += length($0)} END {for (s in len) print s "\t" len[s]}' $GENOME | sort -k2,2nr > genome_lengths.tsv
+head genome_lengths.tsv
 ```
 
-`ls` must list both files. The variables only exist in this terminal; if you start again later, set them again.
+`genome_lengths.tsv` has one line per sequence: its name and its length, longest first.
 
-**4. Check that the sequence names match.** The masking only works if EDTA used exactly the same sequence names as your genome:
+**3. See what the cutoff removes.**
 
 ```bash
-grep ">" $GENOME | cut -d' ' -f1 | tr -d '>' | sort -u > genome_names.txt
-awk -F'\t' '!/^#/ && NF>=5 {print $1}' $EDTA | sort -u > edta_names.txt
-wc -l genome_names.txt edta_names.txt
-comm -13 genome_names.txt edta_names.txt | wc -l
+awk -v min=$MIN '{if ($2 >= min) {k++; kb += $2} else {r++; rb += $2}} END {printf "keep %d sequences (%.2f Mb), remove %d sequences (%.2f Mb)\n", k, kb/1e6, r, rb/1e6}' genome_lengths.tsv
 ```
 
-- `wc -l` shows the number of sequences in your genome and the number of sequences with at least one TE. The second number can be smaller (short scaffolds may have no TEs), but not larger.
-- The last command counts names that are in the EDTA file but not in your genome. It must print `0`. If not, EDTA was run on another genome file or changed the names: stop here, go to "If you can't use EDTA" at the end of this section, and tell us.
+Many sequences may be removed, but together they should be only a small part of the genome. If many Mb would be removed, tell us before you go on.
 
-**5. Convert the annotation to BED format.**
+**4. Write the cleaned genome.**
 
 ```bash
-awk -F'\t' 'BEGIN{OFS="\t"} !/^#/ && NF>=5 {print $1, $4-1, $5}' $EDTA > edta_repeats.bed
-head -3 edta_repeats.bed
-wc -l edta_repeats.bed
+awk -v min=$MIN '$2 >= min {print $1}' genome_lengths.tsv > keep.txt
+awk 'FNR == NR {keep[$1]; next} /^>/ {p = (substr($1, 2) in keep); if (p) print; next} p {print toupper($0)}' keep.txt $GENOME > genome_filtered.fa
 ```
 
-BED has three columns: sequence name, start, end. GFF3 counts positions from 1 and BED from 0, which is why the start is `$4-1`. `wc -l` shows how many TE pieces will be masked.
+The first command lists the names of the sequences to keep. The second reads that list, then copies every sequence on it from your genome, in uppercase. The headers stay as they are.
 
-**6. Soft-mask the genome.**
+**5. Check the result.**
 
 ```bash
-module load BEDTools
-bedtools maskfasta -fi $GENOME -bed edta_repeats.bed -fo genome_softmasked.fa -soft
+grep -c ">" genome_filtered.fa
+wc -l < keep.txt
+grep -v ">" genome_filtered.fa | grep -c '[a-z]'
+realpath genome_filtered.fa
 ```
 
-`-soft` turns the repeat regions into lowercase instead of `N`. If `module load BEDTools` fails, find the exact module name with `module avail bedtools` (upper and lower case matter).
+- The first two numbers must be the same.
+- The third must be `0`: no lowercase letters are left.
+- The path printed by `realpath` is your genome from now on. Keep it: it goes into `samples.csv` (section 17).
 
-**7. Check the result.**
-
-```bash
-grep -c ">" genome_softmasked.fa
-grep -v ">" genome_softmasked.fa | awk '{t += length($0); m += gsub(/[acgtn]/, "")} END {printf "%.1f%% of the genome is soft-masked\n", 100*m/t}'
-```
-
-- The number of sequences must be the same as in your genome (section 15).
-- The masked percentage should be close to the total TE percentage in EDTA's summary file (ending in `.EDTA.TEanno.sum`, in the same folder as the GFF3). If it is `0.0%`, the masking did not work.
-
-**8. Get the path**
-
-```bash
-realpath genome_softmasked.fa
-exit
-```
-
-Keep the path
-
-## 17. Your RNA-seq Reads
+## 4. Your RNA-seq Reads
 
 All RNA-seq reads are in `/lisc/data/scratch/course/2026w300485/RNAseq/`, one folder per library. You read them straight from there; **don't copy them** (they are tens of GB). See what is there:
 
@@ -393,9 +368,9 @@ tr ':' '\n' < reads_2.txt; echo
 
 Each command prints the files one per line. Both lists must have the same number of files, in the same order (the same library on the same line, only `_1` vs `_2` differs). `ls` sorts by name, so this is the case automatically.
 
-## 18. Edit samples.csv in VS Code
+## 5. Edit samples.csv in VS Code
 
-The copied `samples.csv` still describes the test. You replace its content with a template and fill in five values.
+The copied `samples.csv` still describes the test. You replace its content with a template and fill in four values.
 
 **1. Open the file.** In the VS Code Explorer, go to `BRAKER` > your run folder and click `samples.csv`. Turn on word wrap so you can see long lines: **View > Word Wrap** (or Alt+Z; on a Mac, Option+Z).
 
@@ -403,18 +378,17 @@ The copied `samples.csv` still describes the test. You replace its content with 
 
 ```text
 sample_name,genome,genome_masked,protein_fasta,bam_files,fastq_r1,fastq_r2,sra_ids,varus_genus,varus_species,isoseq_bam,isoseq_fastq,busco_lineage,reference_gtf
-MY_SAMPLE_NAME,MY_GENOME_PATH,MY_MASKED_GENOME_PATH,/lisc/data/scratch/course/2026w300485/databases/Viridiplantae.fa.gz,,MY_READS_1,MY_READS_2,,,,,,eukaryota_odb12,
+MY_SAMPLE_NAME,MY_GENOME_PATH,,/lisc/data/scratch/course/2026w300485/databases/Viridiplantae.fa.gz,,MY_READS_1,MY_READS_2,,,,,,eukaryota_odb12,
 ```
 
-Line 1 is the header: never change it. Line 2 is your genome. Proteins (`Viridiplantae.fa.gz`) and the BUSCO lineage (`eukaryota_odb12`) stay as in the test for every species.
+Line 1 is the header: never change it. Line 2 is your genome. Its third field, `genome_masked`, stays empty (`,,` right after the genome path), so BRAKER4 masks your genome with Red, as in the test. Proteins (`Viridiplantae.fa.gz`) and the BUSCO lineage (`eukaryota_odb12`) stay as in the test for every species.
 
-**3. Fill in the five placeholders.** For each one: double-click the placeholder in line 2 (VS Code selects the whole word, including the underscores), then paste your value (Ctrl+V; Mac: Cmd+V).
+**3. Fill in the four placeholders.** For each one: double-click the placeholder in line 2 (VS Code selects the whole word, including the underscores), then paste your value (Ctrl+V; Mac: Cmd+V).
 
 | Placeholder | Replace with | Where to get it |
 | --- | --- | --- |
 | `MY_SAMPLE_NAME` | a short name for your genome, e.g. `Dserotinus`; letters, numbers and underscores only. It becomes the output folder `output/MY_SAMPLE_NAME/` | type it |
-| `MY_GENOME_PATH` | the full path of your genome (the plain, unmasked one) | section 15 (Copy Path) |
-| `MY_MASKED_GENOME_PATH` | the full path of `genome_softmasked.fa`. If you skipped section 16, delete the placeholder so that two commas stay next to each other (`,,`); BRAKER4 then masks with Red | section 16, step 8 |
+| `MY_GENOME_PATH` | the full path of your cleaned genome, `genome_filtered.fa` | section 15, step 5 (`realpath`) |
 | `MY_READS_1` | the read-1 list | open `reads_1.txt` in VS Code, Ctrl+A, Ctrl+C (Mac: Cmd+A, Cmd+C) |
 | `MY_READS_2` | the read-2 list | open `reads_2.txt` in VS Code, select all and copy the same way |
 
@@ -426,7 +400,7 @@ Rules for line 2:
 
 **4. Save** with Ctrl+S (Mac: Cmd+S). An unsaved file shows a dot next to its name in the tab.
 
-This is what a finished line 2 looks like (Daria's *D. serotinus* genome with all four libraries). It has no masked genome, so its third field is empty (`,,` right after the genome path); in your line, the path of `genome_softmasked.fa` goes there:
+This is what a finished line 2 looks like (Daria's *D. serotinus* genome with all four libraries). Its third field is empty (`,,` right after the genome path), as in yours:
 
 ```text
 Dserotinus,/lisc/data/scratch/course/2026w300485/dasha/Dserotinus_scaffolds_final.fa,,/lisc/data/scratch/course/2026w300485/databases/Viridiplantae.fa.gz,,/lisc/data/scratch/course/2026w300485/RNAseq/Dsero_19L/Dsero_19L_MKRN260064944-1A_23M3G5LT4_L1_1.fq.gz:/lisc/data/scratch/course/2026w300485/RNAseq/Dsero_19R/Dsero_19R_MKRN260064947-1A_23M3G5LT4_L1_1.fq.gz:/lisc/data/scratch/course/2026w300485/RNAseq/Dsero_2AB/Dsero_2AB_MKRN260064940-1A_23M3G5LT4_L1_1.fq.gz:/lisc/data/scratch/course/2026w300485/RNAseq/Dsero_2BB/Dsero_2BB_MKRN260064941-1A_23M3G5LT4_L1_1.fq.gz,/lisc/data/scratch/course/2026w300485/RNAseq/Dsero_19L/Dsero_19L_MKRN260064944-1A_23M3G5LT4_L1_2.fq.gz:/lisc/data/scratch/course/2026w300485/RNAseq/Dsero_19R/Dsero_19R_MKRN260064947-1A_23M3G5LT4_L1_2.fq.gz:/lisc/data/scratch/course/2026w300485/RNAseq/Dsero_2AB/Dsero_2AB_MKRN260064940-1A_23M3G5LT4_L1_2.fq.gz:/lisc/data/scratch/course/2026w300485/RNAseq/Dsero_2BB/Dsero_2BB_MKRN260064941-1A_23M3G5LT4_L1_2.fq.gz,,,,,,eukaryota_odb12,
@@ -444,7 +418,7 @@ This counts the columns in each line. It must print `14` twice. Any other number
 paste -d' ' <(head -1 samples.csv | tr ',' '\n') <(tail -1 samples.csv | tr ',' '\n')
 ```
 
-Each column next to its value, as in section 6. Check that `sample_name`, `genome`, `genome_masked`, `protein_fasta`, `fastq_r1`, `fastq_r2` and `busco_lineage` are filled (`genome_masked` is empty only if you skipped section 16).
+Each column next to its value, as in section 6. Check that `sample_name`, `genome`, `protein_fasta`, `fastq_r1`, `fastq_r2` and `busco_lineage` are filled, that `genome` ends in `genome_filtered.fa`, and that `genome_masked` is empty.
 
 ```bash
 awk -F',' 'NR==2 {print split($6,a,":"), split($7,b,":")}' samples.csv
@@ -458,7 +432,7 @@ tail -1 samples.csv | tr ',:' '\n\n' | grep '^/' | xargs ls -lh
 
 Lists every file named in line 2 with its size. If you see `No such file or directory`, that path has a typo: fix it in VS Code, save, and check again.
 
-## 19. Edit config.ini in VS Code
+## 6. Edit config.ini in VS Code
 
 The test allowed each job 4 hours. On a full genome, single steps (GeneMark-ETP, AUGUSTUS) take much longer, so you raise the limit to 3 days.
 
@@ -472,7 +446,7 @@ max_runtime = 4320
 
 4. Save (Ctrl+S; Mac: Cmd+S).
 
-Leave everything else as it is: 16 CPUs and 64 GB per job, `masking_tool = red` (only used if `genome_masked` is empty), AUGUSTUS optimisation on, and `auto_mode_fallback = 0`, so the run stops with an error instead of quietly leaving ETP mode if your evidence is too thin.
+Leave everything else as it is: 16 CPUs and 64 GB per job, `masking_tool = red` (BRAKER4 masks your genome with Red, because `genome_masked` is empty), AUGUSTUS optimisation on, and `auto_mode_fallback = 0`, so the run stops with an error instead of quietly leaving ETP mode if your evidence is too thin.
 
 Check in the terminal:
 
@@ -482,9 +456,8 @@ grep max_runtime config.ini
 
 It must print `max_runtime = 4320`.
 
-> **[? OPEN – Daria/Norm]** Switch off AUGUSTUS optimisation for the student runs (`skip_optimize_augustus = 1`)? It saves several hours per run and costs about 2–3% accuracy.
 
-## 20. Dry Run and Start
+## 7. Dry Run and Start
 
 Open a **new** screen session with a different name, so it doesn't mix with the test:
 
@@ -505,7 +478,7 @@ Dry run:
 snakemake --snakefile ../BRAKER4/Snakefile -n
 ```
 
-It must end with `This was a dry-run`. In the `Job stats` table, `hisat2_align` should now run once per RNA-seq library (4 times for *D. serotinus*), instead of twice as in the test. If you see `MissingInputException`, go back to the checks in section 18.
+It must end with `This was a dry-run`. In the `Job stats` table, `hisat2_align` should now run once per RNA-seq library (4 times for *D. serotinus*), instead of twice as in the test. If you see `MissingInputException`, go back to the checks in section 17.
 
 Start the run:
 
@@ -515,7 +488,7 @@ bash run_slurm.sh
 
 Leave screen with Control+A, release, then D. The run keeps going.
 
-## 21. Watch the Full Run
+## 8. Watch the Full Run
 
 Check on your run once or twice a day:
 
@@ -547,7 +520,7 @@ bash run_slurm.sh
 
 - Don't delete or move anything in your run folder while the run is going.
 
-## 22. Results of the Full Run
+## 21. Results of the Full Run
 
 The results are in `output/MY_SAMPLE_NAME/results/`, with the same files as in the test (section 12). Set your sample name once, then run the checks:
 
@@ -557,20 +530,22 @@ zcat output/$SAMPLE/results/braker.gff3.gz | awk '$3 == "gene"' | wc -l
 cat output/$SAMPLE/results/quality_control/busco_summary.txt
 cat output/$SAMPLE/results/quality_control/compleasm_summary.txt
 cat output/$SAMPLE/results/quality_control/gene_set_statistics.txt
+grep Masked logs/$SAMPLE/masking/masking.log
 ```
 
 - The first command counts the predicted genes.
 - `busco_summary.txt` and `compleasm_summary.txt` show how complete the gene set is (how many of the expected single-copy genes were found).
 - `gene_set_statistics.txt` gives numbers of genes, transcripts, exons and their lengths.
+- The last command shows how much of your genome Red masked, in bp and as a percentage.
 
 Download `braker_report.html` (right-click in the VS Code Explorer > Download) and open it in your browser. Compare it with your test report: number of genes, BUSCO completeness, the training summary and the runtime plot.
 
 For your protocol, record:
 
 - BRAKER4 version (commit ID and date from section 3)
-- your genome file, its number of sequences and its size
+- your genome file, its number of sequences and its size, the length cutoff, and how many sequences (and Mb) it removed (section 15, step 3)
 - the RNA-seq libraries you used, the protein set (`Viridiplantae.fa.gz`) and the BUSCO lineage (`eukaryota_odb12`)
-- the settings: ETP mode, masking (EDTA soft-masking and the percentage masked, or Red), 16 CPUs, 64 GB, any settings you changed
+- the settings: ETP mode, masking with Red and the percentage masked
 - how long the run took
 - number of genes and BUSCO/compleasm completeness
 
