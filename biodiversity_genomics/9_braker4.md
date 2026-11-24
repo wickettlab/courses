@@ -240,7 +240,6 @@ The test genome is 5 Mb of an 848 Mb genome (less than 1%), so a small gene set 
 You run BRAKER4 exactly as in Part 1, with the same `run_slurm.sh`. Four things change:
 
 - **Genome:** your own genome instead of the 5 Mb test piece, we will remove short contigs beforehand
-- **Masking:** you soft-mask your genome yourself with your EDTA results, instead of letting BRAKER4 mask it with Red (standard option).
 - **RNA-seq:** all RNA-seq libraries of your species instead of the two test libraries.
 - **Time:** the whole run takes 2–4 days, so each job is allowed up to 3 days instead of 4 hours.
 
