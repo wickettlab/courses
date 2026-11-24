@@ -205,7 +205,7 @@ If you see `MissingInputException`, a file is not where Snakemake expects it. Ch
 bash run_slurm.sh
 ```
 
-Snakemake stays in your tmux window on the login node and sends each step to Slurm as its own job, which runs on a compute node. You can now leave tmux (Control+B, release, then D); the run keeps going.
+Snakemake stays in your screen window on the login node and sends each step to Slurm as its own job, which runs on a compute node. You can now leave screen (Control+A, then D); the run keeps going.
 
 ## 11. Watch the Run
 
